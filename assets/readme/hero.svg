@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="1200" height="420" viewBox="0 0 1200 420"
+     role="img" aria-labelledby="title desc">
+  <title id="title">Codex Luna Worker</title>
+  <desc id="desc">An explicit Luna command delegates a bounded coding task to Luna Max, then returns the result to the primary Codex agent for review and acceptance.</desc>
+
+  <defs>
+    <linearGradient id="luna-core" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#A99CFF"/>
+      <stop offset="1" stop-color="#6F61E8"/>
+    </linearGradient>
+    <clipPath id="panel-clip">
+      <rect x="0" y="0" width="1200" height="420" rx="28"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#panel-clip)">
+    <rect width="1200" height="420" fill="#0B1020"/>
+    <path d="M-80 348 C180 250 330 470 612 354 C856 253 982 245 1270 326"
+          fill="none" stroke="#202A45" stroke-width="2"/>
+    <path d="M-60 380 C216 282 358 500 638 386 C884 286 1012 279 1280 354"
+          fill="none" stroke="#172038" stroke-width="2"/>
+  </g>
+
+  <g id="title-block" transform="translate(64 56)">
+    <g transform="translate(0 0)">
+      <circle cx="7" cy="7" r="6" fill="#65E6C4"/>
+      <text x="26" y="14" fill="#9AA6C1" font-size="18" font-weight="700"
+            letter-spacing="2.2" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">CODEX SUBAGENT WORKFLOW</text>
+    </g>
+
+    <text x="0" y="84" fill="#F7F8FC" font-size="62" font-weight="760"
+          font-family="-apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, sans-serif">Luna Worker</text>
+    <text x="0" y="126" fill="#C7D0E5" font-size="23" font-weight="500"
+          font-family="-apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, sans-serif">One explicit command. One bounded worker.</text>
+    <text x="0" y="158" fill="#C7D0E5" font-size="23" font-weight="500"
+          font-family="-apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, sans-serif">One reviewed result.</text>
+
+    <g transform="translate(0 196)">
+      <rect width="476" height="64" rx="14" fill="#11182A" stroke="#2D3857" stroke-width="2"/>
+      <rect x="0" y="0" width="8" height="64" rx="4" fill="#65E6C4"/>
+      <text x="28" y="39" fill="#F7F8FC" font-size="22" font-weight="650"
+            font-family="ui-monospace, SFMono-Regular, Menlo, monospace">$luna fix the bug — then verify</text>
+    </g>
+
+    <g transform="translate(0 292)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+      <text x="0" y="0" fill="#8B7CFF" font-size="18" font-weight="700">EXPLICIT ONLY</text>
+      <circle cx="150" cy="-6" r="3" fill="#415071"/>
+      <text x="168" y="0" fill="#9AA6C1" font-size="18">GPT-5.6-LUNA</text>
+      <circle cx="338" cy="-6" r="3" fill="#415071"/>
+      <text x="356" y="0" fill="#9AA6C1" font-size="18">MAX REASONING</text>
+    </g>
+  </g>
+
+  <g id="delegation-flow" transform="translate(626 44)">
+    <rect width="510" height="332" rx="24" fill="#0E1527" stroke="#263150" stroke-width="2"/>
+
+    <g transform="translate(28 28)">
+      <text x="0" y="18" fill="#7784A3" font-size="18" font-weight="700" letter-spacing="1.8"
+            font-family="ui-monospace, SFMono-Regular, Menlo, monospace">CONTROLLED HANDOFF</text>
+
+      <path d="M54 94 H204" fill="none" stroke="#415071" stroke-width="3" stroke-linecap="round"/>
+      <path d="M276 94 H426" fill="none" stroke="#415071" stroke-width="3" stroke-linecap="round"/>
+      <path d="M194 86 L204 94 L194 102" fill="none" stroke="#65E6C4" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M416 86 L426 94 L416 102" fill="none" stroke="#65E6C4" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+      <g id="scope-node" transform="translate(0 54)">
+        <circle cx="54" cy="40" r="38" fill="#131C31" stroke="#526080" stroke-width="2"/>
+        <path d="M40 38 L50 48 L69 28" fill="none" stroke="#65E6C4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="54" y="102" text-anchor="middle" fill="#F7F8FC" font-size="20" font-weight="700"
+              font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif">Scope</text>
+        <text x="54" y="128" text-anchor="middle" fill="#8F9BB8" font-size="18"
+              font-family="ui-monospace, SFMono-Regular, Menlo, monospace">PRIMARY</text>
+      </g>
+
+      <g id="luna-node" transform="translate(204 42)">
+        <circle cx="54" cy="52" r="52" fill="none" stroke="#332C68" stroke-width="2"/>
+        <circle cx="54" cy="52" r="40" fill="url(#luna-core)"/>
+        <circle cx="67" cy="42" r="37" fill="#0E1527"/>
+        <circle cx="36" cy="69" r="4" fill="#65E6C4"/>
+        <text x="54" y="116" text-anchor="middle" fill="#F7F8FC" font-size="20" font-weight="750"
+              font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif">Implement</text>
+        <text x="54" y="142" text-anchor="middle" fill="#A99CFF" font-size="18" font-weight="700"
+              font-family="ui-monospace, SFMono-Regular, Menlo, monospace">LUNA MAX</text>
+      </g>
+
+      <g id="review-node" transform="translate(404 54)">
+        <circle cx="54" cy="40" r="38" fill="#131C31" stroke="#526080" stroke-width="2"/>
+        <path d="M38 48 C48 34 60 32 72 40 C64 54 50 58 38 48 Z" fill="none" stroke="#65E6C4" stroke-width="3"/>
+        <circle cx="55" cy="44" r="5" fill="#65E6C4"/>
+        <text x="54" y="102" text-anchor="middle" fill="#F7F8FC" font-size="20" font-weight="700"
+              font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif">Review</text>
+        <text x="54" y="128" text-anchor="middle" fill="#8F9BB8" font-size="18"
+              font-family="ui-monospace, SFMono-Regular, Menlo, monospace">PRIMARY</text>
+      </g>
+
+      <g transform="translate(0 246)">
+        <rect width="454" height="48" rx="12" fill="#111A2D"/>
+        <text x="18" y="31" fill="#C7D0E5" font-size="18"
+              font-family="ui-monospace, SFMono-Regular, Menlo, monospace">bounded task → code + tests → accepted diff</text>
+      </g>
+    </g>
+  </g>
+</svg>
