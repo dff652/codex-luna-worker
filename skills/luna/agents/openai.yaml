@@ -1,0 +1,7 @@
+interface:
+  display_name: "Luna Worker"
+  short_description: "Delegate bounded coding work to Luna"
+  default_prompt: "Use $luna to delegate this bounded coding task to luna-worker, then review and validate the result."
+
+policy:
+  allow_implicit_invocation: false
