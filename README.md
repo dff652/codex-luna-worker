@@ -111,16 +111,16 @@ $luna 修复用户列表翻页后筛选条件丢失的问题。
 
 ```toml
 model = "gpt-5.6-luna"
-model_reasoning_effort = "high"
-```
-
-`Luna` 是模型，`high`/`max` 是推理强度，不是不同部署。`high` 更符合 Luna 的快速、边界清晰任务定位。只有在账号和模型支持、且任务确实需要更深推理时，才考虑把已安装 agent 文件改为：
-
-```toml
 model_reasoning_effort = "max"
 ```
 
-复杂、开放式任务通常更适合继续由 Sol 或主代理完成，而不是一味提高 Luna 的推理强度。
+`Luna` 是模型，`high`/`max` 是推理强度，不是不同部署。本项目默认使用 `max`，让 Luna 在边界清晰的编码任务上投入更充分的推理与检查时间；相应地，延迟和 token 消耗通常也会增加。如果更看重响应速度和成本，可以把已安装 agent 文件改为：
+
+```toml
+model_reasoning_effort = "high"
+```
+
+即使使用 `max`，复杂、开放式任务仍更适合由 Sol 或主代理完成；Luna 继续只负责边界明确、可独立验证的执行任务。
 
 ## 为什么不是 `/luna`
 
