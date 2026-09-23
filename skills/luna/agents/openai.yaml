@@ -1,7 +1,7 @@
 interface:
   display_name: "Luna Worker"
-  short_description: "Delegate bounded coding work to Luna"
-  default_prompt: "Use $luna to delegate this bounded coding task to luna-worker, then review and validate the result."
+  short_description: "Delegate coding work to GPT-6 or GPT-5.6 Luna"
+  default_prompt: "Use $luna to delegate this bounded coding task to luna56-worker by default, then review and validate the result."
 
 policy:
-  allow_implicit_invocation: false
+  allow_implicit_invocation: true

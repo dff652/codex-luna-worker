@@ -53,10 +53,12 @@ case "$skills_root" in
 esac
 
 source_agent="$script_dir/agents/luna-worker.toml"
+source_agent6="$script_dir/agents/luna6-worker.toml"
+source_agent56="$script_dir/agents/luna56-worker.toml"
 source_skill="$script_dir/skills/luna/SKILL.md"
 source_metadata="$script_dir/skills/luna/agents/openai.yaml"
 
-for source_file in "$source_agent" "$source_skill" "$source_metadata"; do
+for source_file in "$source_agent" "$source_agent6" "$source_agent56" "$source_skill" "$source_metadata"; do
   test -f "$source_file" || fail "required source file is missing: $source_file"
   test ! -L "$source_file" || fail "source file must not be a symbolic link: $source_file"
 done
@@ -102,8 +104,11 @@ ensure_directory "$skill_dir" 755
 ensure_directory "$skill_metadata_dir" 755
 
 install_file "$source_agent" "$agent_dir/luna-worker.toml" 600
+install_file "$source_agent6" "$agent_dir/luna6-worker.toml" 600
+install_file "$source_agent56" "$agent_dir/luna56-worker.toml" 600
 install_file "$source_skill" "$skill_dir/SKILL.md" 644
 install_file "$source_metadata" "$skill_metadata_dir/openai.yaml" 644
 
 printf '\nInstallation complete. Restart Codex or open a new chat, then invoke:\n'
 printf '  $luna <bounded coding task>\n'
+printf '  Or ask for luna6-worker or luna56-worker by name.\n'
