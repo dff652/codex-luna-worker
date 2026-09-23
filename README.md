@@ -26,13 +26,28 @@ Codex Luna Worker 把“执行”从主会话中拆出来，同时保留可控�
 
 ## Quick start
 
-### 1. 安装
+### 1. 安装或更新
+
+在 Linux/macOS 上，首次安装和后续更新使用同一个入口，不需要先 clone 仓库：
 
 ```bash
-git clone https://github.com/dff652/codex-luna-worker.git && cd codex-luna-worker && ./install.sh
+curl -fsSLo luna-bootstrap.sh https://raw.githubusercontent.com/dff652/codex-luna-worker/main/bootstrap.sh
+bash luna-bootstrap.sh
 ```
 
-安装器会写入：
+可先查看下载的脚本再运行。若已克隆仓库，也可以在仓库根目录运行 `./install.sh --update`。安装器会自动识别现有 `$HOME/.codex/skills/luna` 或 `$HOME/.agents/skills/luna`；新安装默认写入后者。若两个位置都装有 Luna，请用 `--skills-dir` 明确选择。Windows 用户可按项目结构手动复制对应文件。
+
+`bootstrap.sh` 从 GitHub 下载当前 `main` 的仓库归档，在临时目录执行其中的安装器，并清理临时目录。分开下载与执行便于先检查脚本内容，也能明确看到下载失败。
+
+克隆方式同样支持：
+
+```bash
+git clone https://github.com/dff652/codex-luna-worker.git
+cd codex-luna-worker
+./install.sh --update
+```
+
+新安装默认写入以下位置；升级时 skill 会留在原安装目录：
 
 ```text
 ${CODEX_HOME:-$HOME/.codex}/agents/luna-worker.toml
@@ -41,7 +56,7 @@ ${CODEX_HOME:-$HOME/.codex}/agents/luna56-worker.toml
 $HOME/.agents/skills/luna/SKILL.md
 ```
 
-它不访问网络，也不会静默覆盖内容不同的已有配置。安装后重启 Codex、重新加载 IDE Extension，或开启新会话。
+`install.sh` 本身不访问网络。使用 `--update` 时，内容不同的旧文件会先备份到 `${CODEX_HOME:-$HOME/.codex}/backups/`，然后更新；相同内容保持不变。省略 `--update` 时，安装器仍拒绝覆盖内容不同的文件。安装后重启 Codex、重新加载 IDE Extension，或开启新会话。
 
 ### 2. 委托一个任务
 
@@ -112,26 +127,9 @@ model_reasoning_effort = "high"
 
 ### 升级已有安装
 
-先更新本仓库。确定当前 Codex 使用的 skill 目录：默认安装器使用 `$HOME/.agents/skills`；如果以前安装在 `$HOME/.codex/skills`，把下面的 `skills_root` 改成该路径。`codex_root` 也应与启动 Codex 时使用的 `CODEX_HOME` 一致。
+重新运行上面的 curl 命令即可。安装器会复用已存在的 skill 目录，并为内容不同的文件生成备份。旧的 `luna-worker.toml` 保留，仍固定使用 5.6。若你对已安装文件做过个性化修改，更新后可在输出的备份目录查看旧版本并合并这些修改。
 
-```bash
-git pull
-codex_root="${CODEX_HOME:-$HOME/.codex}"
-skills_root="${CODEX_SKILLS_DIR:-$HOME/.agents/skills}"
-diff -u "$skills_root/luna/SKILL.md" skills/luna/SKILL.md
-diff -u "$skills_root/luna/agents/openai.yaml" skills/luna/agents/openai.yaml
-```
-
-确认差异只包含本次预期更新后，再执行：
-
-```bash
-install -m 600 agents/luna6-worker.toml "$codex_root/agents/luna6-worker.toml"
-install -m 600 agents/luna56-worker.toml "$codex_root/agents/luna56-worker.toml"
-install -m 644 skills/luna/SKILL.md "$skills_root/luna/SKILL.md"
-install -m 644 skills/luna/agents/openai.yaml "$skills_root/luna/agents/openai.yaml"
-```
-
-旧的 `luna-worker.toml` 可留在原处，仍固定使用 5.6。安装器刻意拒绝覆盖内容不同的文件，因此升级时需要先核对差异，再手动替换。完成后重启 Codex 或重新加载 IDE Extension，并开启新会话。
+若使用本地克隆，则先 `git pull`，再运行 `./install.sh --update`。`--codex-home` 和 `--skills-dir` 可指定非默认安装位置；远程入口也会将这些参数传给安装器，例如 `bash luna-bootstrap.sh --skills-dir "$HOME/.codex/skills"`。
 
 ## Safety boundaries
 
@@ -139,7 +137,7 @@ install -m 644 skills/luna/agents/openai.yaml "$skills_root/luna/agents/openai.y
 - 不让 Luna 执行无监督的删除、发布或生产部署。
 - 不依赖子代理摘要代替真实 diff 和测试结果。
 - 不在分享配置中加入 API key、MCP 凭据、内部路径或项目私有规则。
-- 安装器遇到内容不同的目标文件会 fail-loud，交由用户人工比较。
+- 默认安装器遇到内容不同的目标文件会拒绝覆盖；`--update` 会先备份再替换。
 
 ## Troubleshooting
 
