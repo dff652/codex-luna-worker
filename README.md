@@ -37,7 +37,7 @@ bash luna-bootstrap.sh
 
 可先查看下载的脚本再运行。若已克隆仓库，也可以在仓库根目录运行 `./install.sh --update`。安装器会自动识别现有 `$HOME/.codex/skills/luna` 或 `$HOME/.agents/skills/luna`；新安装默认写入后者。若两个位置都装有 Luna，请用 `--skills-dir` 明确选择。Windows 用户可按项目结构手动复制对应文件。
 
-`bootstrap.sh` 从 GitHub 下载当前 `main` 的仓库归档，在临时目录执行其中的安装器，并清理临时目录。分开下载与执行便于先检查脚本内容，也能明确看到下载失败。
+`bootstrap.sh` 默认从 GitHub 下载 `v0.1.0` 标签对应的仓库归档，在临时目录执行其中的安装器，并清理临时目录。分开下载与执行便于先检查脚本内容，也能明确看到下载失败。
 
 克隆方式同样支持：
 
@@ -54,6 +54,7 @@ ${CODEX_HOME:-$HOME/.codex}/agents/luna-worker.toml
 ${CODEX_HOME:-$HOME/.codex}/agents/luna6-worker.toml
 ${CODEX_HOME:-$HOME/.codex}/agents/luna56-worker.toml
 $HOME/.agents/skills/luna/SKILL.md
+$HOME/.agents/skills/luna/VERSION
 ```
 
 `install.sh` 本身不访问网络。使用 `--update` 时，内容不同的旧文件会先备份到 `${CODEX_HOME:-$HOME/.codex}/backups/`，然后更新；相同内容保持不变。省略 `--update` 时，安装器仍拒绝覆盖内容不同的文件。安装后重启 Codex、重新加载 IDE Extension，或开启新会话。
@@ -97,6 +98,7 @@ $luna 修复用户列表翻页后筛选条件丢失的问题。
 | `agents/luna-worker.toml` | 保留旧版 5.6 代理配置，供已有调用兼容使用 |
 | `skills/luna/SKILL.md` | 根据用户指定的版本选择代理，并定义委托、等待、复核和汇报流程 |
 | `skills/luna/agents/openai.yaml` | 暴露 `$luna`，让点名 worker 的自然语言请求也可触发 skill |
+| `VERSION` | 声明版本，并复制到安装后的 skill 目录 |
 
 ## Configuration
 
@@ -130,6 +132,24 @@ model_reasoning_effort = "high"
 重新运行上面的 curl 命令即可。安装器会复用已存在的 skill 目录，并为内容不同的文件生成备份。旧的 `luna-worker.toml` 保留，仍固定使用 5.6。若你对已安装文件做过个性化修改，更新后可在输出的备份目录查看旧版本并合并这些修改。
 
 若使用本地克隆，则先 `git pull`，再运行 `./install.sh --update`。`--codex-home` 和 `--skills-dir` 可指定非默认安装位置；远程入口也会将这些参数传给安装器，例如 `bash luna-bootstrap.sh --skills-dir "$HOME/.codex/skills"`。
+
+### 版本与回退
+
+仓库根目录的 `VERSION` 是包版本；安装后同名文件写在实际使用的 `luna` skill 目录中。查看默认位置的安装版本：
+
+```bash
+cat "$HOME/.agents/skills/luna/VERSION"
+```
+
+若此前安装在 `$HOME/.codex/skills`，改为查看 `$HOME/.codex/skills/luna/VERSION`。旧安装在首次升级前没有该文件。
+
+远程入口可指定 Git tag，重新执行较早版本即可回退；更新前的文件仍会备份：
+
+```bash
+bash luna-bootstrap.sh --version v0.1.0
+```
+
+每次发布需同步修改 `VERSION` 与 `bootstrap.sh` 的默认 tag，提交后创建同名 Git tag，再推送提交和 tag。远程入口会检查归档中的 `VERSION` 与请求的 tag 是否一致。通过 tag 安装可复现该版本；直接从本地开发分支运行 `install.sh` 时，版本文件只表示该分支声明的包版本。
 
 ## Safety boundaries
 

@@ -71,15 +71,19 @@ source_agent6="$script_dir/agents/luna6-worker.toml"
 source_agent56="$script_dir/agents/luna56-worker.toml"
 source_skill="$script_dir/skills/luna/SKILL.md"
 source_metadata="$script_dir/skills/luna/agents/openai.yaml"
+source_version="$script_dir/VERSION"
 
-sources=("$source_agent" "$source_agent6" "$source_agent56" "$source_skill" "$source_metadata")
-targets=("$codex_home/agents/luna-worker.toml" "$codex_home/agents/luna6-worker.toml" "$codex_home/agents/luna56-worker.toml" "$skills_root/luna/SKILL.md" "$skills_root/luna/agents/openai.yaml")
-modes=(600 600 600 644 644)
+sources=("$source_agent" "$source_agent6" "$source_agent56" "$source_skill" "$source_metadata" "$source_version")
+targets=("$codex_home/agents/luna-worker.toml" "$codex_home/agents/luna6-worker.toml" "$codex_home/agents/luna56-worker.toml" "$skills_root/luna/SKILL.md" "$skills_root/luna/agents/openai.yaml" "$skills_root/luna/VERSION")
+modes=(600 600 600 644 644 644)
 
 for source_file in "${sources[@]}"; do
   test -f "$source_file" || fail "required source file is missing: $source_file"
   test ! -L "$source_file" || fail "source file must not be a symbolic link: $source_file"
 done
+
+read -r package_version < "$source_version"
+[[ "$package_version" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || fail "invalid VERSION file: $source_version"
 
 for i in "${!sources[@]}"; do
   target_path="${targets[$i]}"
@@ -144,6 +148,7 @@ if test "$update" = true; then
         0|1|2) backup_path="$backup_dir/agents/$(basename "$target_path")" ;;
         3) backup_path="$backup_dir/skills/luna/SKILL.md" ;;
         4) backup_path="$backup_dir/skills/luna/agents/openai.yaml" ;;
+        5) backup_path="$backup_dir/skills/luna/VERSION" ;;
       esac
       install -d -m 700 "$(dirname "$backup_path")"
       cp -p -- "$target_path" "$backup_path"
@@ -157,5 +162,6 @@ for i in "${!sources[@]}"; do
 done
 
 printf '\nInstallation complete. Restart Codex or open a new chat, then invoke:\n'
+printf '  Installed version: %s\n' "$package_version"
 printf '  $luna <bounded coding task>\n'
 printf '  Or ask for luna6-worker or luna56-worker by name.\n'
